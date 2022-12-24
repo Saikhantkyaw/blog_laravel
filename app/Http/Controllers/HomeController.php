@@ -6,6 +6,7 @@ use view;
 use App\Models\post;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\storepostrequest;
 
 class HomeController extends Controller
 {
@@ -38,20 +39,14 @@ class HomeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(storepostrequest $request)
     {
-     
+       //   $validated = $request->validated();
 
-      $request->validate([
-        'name' => 'required|unique:posts|max:255',
-        'description' => 'required|max:255',
-    ]);
-
-      $post=new post();
-      $post->name=$request->name;
-      $post->description=$request->description;
-      $post->save();
-      return redirect('/posts');
+     post::create([
+       'name'=>$request->name,
+       'description'=>$request->description,
+     ]);
        
     }
 
@@ -63,7 +58,7 @@ class HomeController extends Controller
      */
     public function show(post $post)
     {
-       
+       dd($post->categories);
         return view('show',compact('post'));
     }
 
@@ -86,15 +81,13 @@ class HomeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, post $post)
+    public function update(storepostrequest $request, post $post)
     {
-          $request->validate([
-        'name' => 'required|unique:posts|max:255',
-        'description' => 'required|max:255',
-       ]);
-         $post->name = $request->name;
-         $post->description= $request->description;
-         $post->save();
+         
+         $post->update([
+           'name'=>$request->name,
+          'description'=>$request->description,
+         ]);
 
          return redirect('/posts');
     }
@@ -108,6 +101,6 @@ class HomeController extends Controller
     public function destroy(post $post)
     {
         $post->delete();
-           return redirect('/posts');
+        return redirect('/posts');
     }
 }

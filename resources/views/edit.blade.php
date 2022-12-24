@@ -17,12 +17,13 @@
   <div class="form-group" >
 
     <label for="name">Name</label>
-  <input type="text" class="form-control"  placeholder="Your name" name="name" value="old{{$post->name,'name'}}">
+  <input type="text" class="form-control"  placeholder="Your name" name="name" 
+  value="{{old('name',$post->name)}}">
   </div>
   <div class="form-group">
     <label for="description">description</label>
      <textarea name="description" id="" cols="30" rows="10" class="form-control">
-      old{{$post->description,'description'}}
+      {{old('description',$post->description)}}
     </textarea>
   </div><br>
   <button type="submit" class="btn btn-warning">Submit</button>
