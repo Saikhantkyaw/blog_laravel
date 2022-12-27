@@ -11,7 +11,8 @@
         </div>
         <div class="card-body">
             <h5 class="card-title" style="text-align:center;">{{$post->description}}</h5>
-            
+            <p >category::{{$post->categories->name}}</p>
+            <br>
             <a href="/posts" class="btn btn-primary">Back</a>
         </div>
 </div>

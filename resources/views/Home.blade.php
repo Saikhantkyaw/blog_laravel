@@ -4,6 +4,8 @@
    
    <div class="container"> 
    <a href="posts/create"  class="btn btn-success">new blog</a> <br>
+   <h4 style="float:right;">User_name::{{Auth::user()->name}}</h4>
+  
     @foreach($post as $post)
     
     <div  class="container" >  
@@ -27,5 +29,6 @@
     </div>
      
     @endforeach
+     <br><a href="logout"  class="btn btn-warning">logout</a> <br>
     </div>
 @endsection

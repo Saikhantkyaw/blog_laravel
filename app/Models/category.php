@@ -5,12 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class catigories extends Model
-{
+class category extends Model
+{    
+    protected $table='categories';
+
     use HasFactory;
 
-     public function posts()
+      public function posts()
     {
-         return $this->hasMany(post::class);
+        return $this->hasMany(post::class);
     }
+
+     
 }

@@ -4,12 +4,16 @@ namespace App\Http\Controllers;
 
 use view;
 use App\Models\post;
+use App\Models\category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\storepostrequest;
 
 class HomeController extends Controller
-{
+{   
+
+  
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +22,7 @@ class HomeController extends Controller
    
     public function index()
     {   
-        $post=post::orderBy('id','desc')->get();
+        $post=post::where('user_id',Auth::user()->id)->orderBy('id','desc')->get();
         return view('Home',compact('post'));
     }
 
@@ -29,8 +33,8 @@ class HomeController extends Controller
      */
     public function create()
     {  
-        
-       return view('create');
+       $cat=category::all();
+       return view('create',compact('cat'));
     }
 
     /**
@@ -41,13 +45,10 @@ class HomeController extends Controller
      */
     public function store(storepostrequest $request)
     {
-       //   $validated = $request->validated();
+        $validated = $request->validated();
 
-     post::create([
-       'name'=>$request->name,
-       'description'=>$request->description,
-     ]);
-       
+     post::create($validated);
+       return redirect('/posts');
     }
 
     /**
@@ -58,7 +59,10 @@ class HomeController extends Controller
      */
     public function show(post $post)
     {
-       dd($post->categories);
+         // if ( Auth::user()->id != $post->user_id) {
+         //    abort(403);
+         // }
+        $this->authorize('view',$post);
         return view('show',compact('post'));
     }
 
@@ -70,8 +74,11 @@ class HomeController extends Controller
      */
     public function edit(post $post)
     {
-         
-            return view('edit',compact('post'));
+         if ( Auth::user()->id != $post->user_id) {
+            abort(403);
+        }
+            $cat=category::all();
+            return view('edit',compact('post','cat'));
     }
 
     /**
@@ -83,11 +90,8 @@ class HomeController extends Controller
      */
     public function update(storepostrequest $request, post $post)
     {
-         
-         $post->update([
-           'name'=>$request->name,
-          'description'=>$request->description,
-         ]);
+          $validated = $request->validated();
+         $post->update( $validated);
 
          return redirect('/posts');
     }
