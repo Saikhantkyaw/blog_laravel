@@ -1,5 +1,7 @@
 <?php
-
+use App\test;
+use App\container;
+use App\TestFacade;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\logout_controller;
@@ -15,7 +17,9 @@ use App\Http\Controllers\logout_controller;
 |
 */
 
-
+Route::get('/',function(){
+   return Test::class;
+});
 Route::resource('posts', HomeController::class)->middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),

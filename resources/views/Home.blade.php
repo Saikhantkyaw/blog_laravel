@@ -1,7 +1,12 @@
 @extends('layout')
 @section('content')
    <h2 style="text-align:center;"> Blog simple site</h2> <br><br>
-   
+      @if (session('alert'))
+      <div class="alert alert-success alert-dismissible fade in">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>Success!</strong> {{session('alert')}}
+  </div>
+    @endif
    <div class="container"> 
    <a href="posts/create"  class="btn btn-success">new blog</a> <br>
    <h4 style="float:right;">User_name::{{Auth::user()->name}}</h4>

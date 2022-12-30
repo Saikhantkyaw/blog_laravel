@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use view;
 use App\Models\post;
 use App\Models\category;
+use App\Mail\poststoredmail;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\storepostrequest;
 
 class HomeController extends Controller
@@ -22,6 +24,9 @@ class HomeController extends Controller
    
     public function index()
     {   
+        // Mail::raw('hello sai',function($msg){
+        //     $msg->to('saikhantkyaw1551@gmail.com')->subject('test_mail');
+        // });
         $post=post::where('user_id',Auth::user()->id)->orderBy('id','desc')->get();
         return view('Home',compact('post'));
     }
@@ -44,11 +49,13 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(storepostrequest $request)
-    {
+    {   
+        
         $validated = $request->validated();
-
-     post::create($validated);
-       return redirect('/posts');
+ 
+     post::create($validated + ['user_id'=>Auth::user()->id]);
+     Mail::to($request->user())->send(new poststoredmail());
+       return redirect('/posts')->with('alert',config('apap.massage.create'));
     }
 
     /**
@@ -74,9 +81,7 @@ class HomeController extends Controller
      */
     public function edit(post $post)
     {
-         if ( Auth::user()->id != $post->user_id) {
-            abort(403);
-        }
+        $this->authorize('view',$post);
             $cat=category::all();
             return view('edit',compact('post','cat'));
     }
@@ -93,7 +98,7 @@ class HomeController extends Controller
           $validated = $request->validated();
          $post->update( $validated);
 
-         return redirect('/posts');
+         return redirect('/posts')->with('alert',config('apap.massage.update'));
     }
 
     /**
@@ -105,6 +110,6 @@ class HomeController extends Controller
     public function destroy(post $post)
     {
         $post->delete();
-        return redirect('/posts');
+        return redirect('/posts')->with('alert',config('apap.massage.delete'));
     }
 }
