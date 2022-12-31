@@ -7,6 +7,6 @@
     <title>Document</title>
 </head>
 <body>
-    <p> {{$data->name}} is successfully created!!!</p>
+      <h1>{{$data->name}} is successfully updated!!!</h1>
 </body>
 </html>

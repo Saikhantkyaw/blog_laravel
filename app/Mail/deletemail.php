@@ -2,27 +2,25 @@
 
 namespace App\Mail;
 
-use App\Models\post;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Envelope;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\SerializesModels;
 
-class poststoredmail extends Mailable
+class deletemail extends Mailable
 {
     use Queueable, SerializesModels;
-     
-    public $data;
+
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(post $post)
+    public function __construct()
     {
-       $this->data=$post;
+        //
     }
 
     /**
@@ -33,7 +31,7 @@ class poststoredmail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'this is 6.2 testing',
+            subject: 'Deletemail',
         );
     }
 
@@ -45,10 +43,7 @@ class poststoredmail extends Mailable
     public function content()
     {
         return new Content(
-            view: 'storedmail',
-            with:[
-                'data'=>$this->data,
-            ]
+            view: 'view.name',
         );
     }
 

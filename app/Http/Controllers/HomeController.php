@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use view;
 use App\Models\post;
+use App\Mail\editmail;
 use App\Models\category;
 use App\Mail\poststoredmail;
 use Illuminate\Http\Request;
@@ -53,8 +54,8 @@ class HomeController extends Controller
         
         $validated = $request->validated();
  
-     post::create($validated + ['user_id'=>Auth::user()->id]);
-     Mail::to($request->user())->send(new poststoredmail());
+     $post=post::create($validated + ['user_id'=>Auth::user()->id]);
+     
        return redirect('/posts')->with('alert',config('apap.massage.create'));
     }
 
@@ -96,8 +97,8 @@ class HomeController extends Controller
     public function update(storepostrequest $request, post $post)
     {
           $validated = $request->validated();
-         $post->update( $validated);
-
+         $post=$post->update( $validated);
+        // Mail::to('saikhantkyaw1551@gmail.com')->send(new editmail($post));
          return redirect('/posts')->with('alert',config('apap.massage.update'));
     }
 

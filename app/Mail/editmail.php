@@ -10,11 +10,10 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class poststoredmail extends Mailable
+class editmail extends Mailable
 {
     use Queueable, SerializesModels;
-     
-    public $data;
+     public $data;
     /**
      * Create a new message instance.
      *
@@ -22,7 +21,7 @@ class poststoredmail extends Mailable
      */
     public function __construct(post $post)
     {
-       $this->data=$post;
+        $this->data=$post;
     }
 
     /**
@@ -33,7 +32,7 @@ class poststoredmail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'this is 6.2 testing',
+            subject: 'editmail',
         );
     }
 
@@ -45,7 +44,7 @@ class poststoredmail extends Mailable
     public function content()
     {
         return new Content(
-            view: 'storedmail',
+            view: 'editmail',
             with:[
                 'data'=>$this->data,
             ]
