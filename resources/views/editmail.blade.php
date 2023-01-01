@@ -1,3 +1,4 @@
+use App\Notifications\creatednoti;
 <!DOCTYPE html>
 <html lang="en">
 <head>

@@ -18,7 +18,7 @@ use App\Http\Controllers\logout_controller;
 */
 
 Route::get('/',function(){
-   return Test::class;
+   return view('welcome');
 });
 Route::resource('posts', HomeController::class)->middleware([
     'auth:sanctum',

@@ -4,14 +4,18 @@ namespace App\Http\Controllers;
 
 use view;
 use App\Models\post;
+use App\Models\User;
 use App\Mail\editmail;
 use App\Models\category;
+use App\Events\storedevent;
 use App\Mail\poststoredmail;
 use Illuminate\Http\Request;
+use App\Notifications\creatednoti;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\storepostrequest;
+use Illuminate\Support\Facades\Notification;
 
 class HomeController extends Controller
 {   
@@ -28,6 +32,11 @@ class HomeController extends Controller
         // Mail::raw('hello sai',function($msg){
         //     $msg->to('saikhantkyaw1551@gmail.com')->subject('test_mail');
         // });
+          
+
+        // $user=User::find(2);
+        // $user->notify(new creatednoti());
+        //Notification::send(User::find(2), new creatednoti());
         $post=post::where('user_id',Auth::user()->id)->orderBy('id','desc')->get();
         return view('Home',compact('post'));
     }
@@ -55,7 +64,7 @@ class HomeController extends Controller
         $validated = $request->validated();
  
      $post=post::create($validated + ['user_id'=>Auth::user()->id]);
-     
+     event(new storedevent($post));
        return redirect('/posts')->with('alert',config('apap.massage.create'));
     }
 

@@ -17,11 +17,11 @@ class post extends Model
        return $this->belongsTo(category::class,'category_id');
     }
 
-    protected static function booted()
-    {
-        static::created(function ($post) {
-          Mail::to('saikhantkyaw1551@gmail.com')->send(new poststoredmail($post));
-        });
-    }
+    // protected static function booted()
+    // {
+    //     static::created(function ($post) {
+    //       Mail::to('saikhantkyaw1551@gmail.com')->send(new poststoredmail($post));
+    //     });
+    // }
 }
 
